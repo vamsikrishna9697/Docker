@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VOGUE & VIBE — Modern Clothing Store</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        /* Smooth hiding/showing for cart drawer */
+        .cart-drawer { transform: translateX(100%); transition: transform 0.3s ease-in-out; }
+        .cart-drawer.open { transform: translateX(0); }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 antialiased">
+
+    <!-- ANNOUNCEMENT BAR -->
+    <div class="bg-black text-white text-xs py-2 text-center font-medium px-4 tracking-wider">
+        🔥 FREE SHIPPING ON ALL ORDERS OVER $75. USE CODE: <span class="underline font-bold">VOGUE20</span>
+    </div>
+
+    <!-- NAVBAR -->
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="filterCategory('All')">
+                <span class="text-2xl font-black tracking-tighter uppercase">Vogue<span class="text-indigo-600">.</span></span>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex space-x-8 text-sm font-medium text-gray-600">
+                <button onclick="filterCategory('All')" class="nav-link text-indigo-600 font-semibold transition">Home</button>
+                <button onclick="filterCategory('Men')" class="nav-link hover:text-indigo-600 transition">Men</button>
+                <button onclick="filterCategory('Women')" class="nav-link hover:text-indigo-600 transition">Women</button>
+                <button onclick="filterCategory('Accessories')" class="nav-link hover:text-indigo-600 transition">Accessories</button>
+            </nav>
+
+            <!-- Actions / Cart Button -->
+            <div class="flex items-center space-x-4">
+                <button onclick="toggleCart()" class="relative bg-gray-100 hover:bg-gray-200 p-2.5 rounded-full transition flex items-center justify-center">
+                    <i class="fa-solid fa-bag-shopping text-gray-700"></i>
+                    <span id="cart-badge" class="absolute -top-1 -right-1 bg-indigo-600 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="relative rounded-3xl overflow-hidden bg-gradient-to-r from-gray-900 to-indigo-950 text-white px-8 py-16 sm:py-24 sm:px-16 flex flex-col justify-center items-start shadow-2xl">
+            <div class="max-w-xl space-y-4">
+                <span class="bg-indigo-500/30 text-indigo-300 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider border border-indigo-500/30">New Season Drop</span>
+                <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight leading-tight">Elevate Your Everyday Style</h1>
+                <p class="text-gray-300 text-sm sm:text-base font-light">Discover handcrafted apparel designed for absolute comfort, clean aesthetics, and longevity.</p>
+                <button onclick="document.getElementById('shop-section').scrollIntoView({behavior: 'smooth'})" class="mt-4 bg-white text-gray-900 hover:bg-indigo-50 font-semibold px-6 py-3 rounded-xl transition shadow-lg text-sm">
+                    Shop Collection
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- SHOP SECTION -->
+    <main id="shop-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 border-b border-gray-200 pb-4">
+            <div>
+                <h2 id="section-title" class="text-2xl font-bold tracking-tight text-gray-900">Featured Catalog</h2>
+                <p class="text-sm text-gray-500">Pick from our curated selection of premium outfits.</p>
+            </div>
+            <!-- Category Filter Buttons -->
+            <div class="flex flex-wrap gap-2" id="filter-buttons">
+                <button onclick="filterCategory('All')" class="cat-btn bg-black text-white px-4 py-2 rounded-lg text-xs font-semibold transition">All Items</button>
+                <button onclick="filterCategory('Men')" class="cat-btn bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg text-xs font-semibold transition">Men</button>
+                <button onclick="filterCategory('Women')" class="cat-btn bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg text-xs font-semibold transition">Women</button>
+                <button onclick="filterCategory('Accessories')" class="cat-btn bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg text-xs font-semibold transition">Accessories</button>
+            </div>
+        </div>
+
+        <!-- Product Grid -->
+        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Dynamically populated via JavaScript -->
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-gray-200 mt-20 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6 text-center md:text-left">
+            <div>
+                <span class="text-xl font-black tracking-tighter uppercase">Vogue<span class="text-indigo-600">.</span></span>
+                <p class="text-xs text-gray-500 mt-1">Crafting standard trends for modern wardrobes worldwide.</p>
+            </div>
+            <p class="text-xs text-gray-400">&copy; 2026 Vogue & Vibe Inc. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- SLIDING CART DRAWER -->
+    <div id="cart-overlay" onclick="toggleCart()" class="fixed inset-0 bg-black/50 z-50 hidden backdrop-blur-sm transition-opacity"></div>
+    <div id="cart-drawer" class="cart-drawer fixed top-0 right-0 bottom-0 w-full max-w-md bg-white z-50 shadow-2xl flex flex-col justify-between">
+        <!-- Cart Header -->
+        <div class="p-6 border-b border-gray-100 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <i class="fa-solid fa-bag-shopping text-indigo-600"></i>
+                <h3 class="font-bold text-lg">Your Shopping Bag</h3>
+            </div>
+            <button onclick="toggleCart()" class="text-gray-400 hover:text-gray-600 p-2"><i class="fa-solid fa-xmark text-lg"></i></button>
+        </div>
+
+        <!-- Cart Items List -->
+        <div id="cart-items" class="p-6 overflow-y-auto flex-grow space-y-4">
+            <!-- Populated via JS -->
+        </div>
+
+        <!-- Cart Footer / Checkout -->
+        <div class="p-6 border-t border-gray-100 bg-gray-50 space-y-4">
+            <div class="flex justify-between text-sm">
+                <span class="text-gray-500">Subtotal</span>
+                <span id="cart-subtotal" class="font-bold text-gray-900">$0.00</span>
+            </div>
+            <div class="flex justify-between text-sm">
+                <span class="text-gray-500">Estimated Shipping</span>
+                <span class="font-bold text-emerald-600">Free</span>
+            </div>
+            <div class="border-t border-gray-200 pt-3 flex justify-between text-base font-extrabold">
+                <span>Total</span>
+                <span id="cart-total" class="text-indigo-600">$0.00</span>
+            </div>
+            <button onclick="openCheckoutModal()" id="checkout-action-btn" disabled class="w-full bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-xl transition shadow-lg shadow-indigo-600/20 text-sm">
+                Proceed to Checkout
+            </button>
+        </div>
+    </div>
+
+    <!-- CHECKOUT SUCCESS MODAL -->
+    <div id="checkout-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center space-y-4 shadow-2xl animate-in fade-in zoom-in duration-200">
+            <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-2xl">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h3 class="text-2xl font-extrabold text-gray-900">Order Placed!</h3>
+            <p class="text-xs text-gray-500">Thank you for shopping with Vogue. Your items will arrive shortly. A confirmation email has been sent.</p>
+            <button onclick="closeCheckoutModal()" class="w-full bg-black hover:bg-gray-800 text-white font-semibold py-3 rounded-xl transition text-sm">
+                Continue Shopping
+            </button>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT APP LOGIC -->
+    <script>
+        // Mock Product Database
+        const products = [
+            { id: 1, name: "Minimalist Oversized Hoodie", category: "Men", price: 65.00, image: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&q=80&w=600" },
+            { id: 2, name: "Classic Tailored Trench Coat", category: "Women", price: 120.00, image: "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&q=80&w=600" },
+            { id: 3, name: "Relaxed Fit Cotton Chinos", category: "Men", price: 45.00, image: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&q=80&w=600" },
+            { id: 4, name: "Ribbed Knit Crop Sweater", category: "Women", price: 55.00, image: "https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?auto=format&fit=crop&q=80&w=600" },
+            { id: 5, name: "Structured Leather Crossbody Bag", category: "Accessories", price: 85.00, image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&q=80&w=600" },
+            { id: 6, name: "Unisex UV-Protected Sunglasses", category: "Accessories", price: 30.00, image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&q=80&w=600" },
+            { id: 7, name: "Heavyweight Boxy Tee", category: "Men", price: 35.00, image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&q=80&w=600" },
+            { id: 8, name: "Pleated High-Waist Midi Skirt", category: "Women", price: 60.00, image: "https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?auto=format&fit=crop&q=80&w=600" }
+        ];
+
+        let cart = [];
+        let currentCategory = 'All';
+
+        // Render Products
+        function renderProducts(category = 'All') {
+            const grid = document.getElementById('product-grid');
+            const filtered = category === 'All' ? products : products.filter(p => p.category === category);
+            
+            grid.innerHTML = filtered.map(p => `
+                <div class="group bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl transition flex flex-col justify-between">
+                    <div class="relative aspect-[4/5] bg-gray-100 overflow-hidden">
+                        <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-md px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wide text-gray-700">${p.category}</span>
+                    </div>
+                    <div class="p-5 space-y-3 flex flex-col flex-grow justify-between">
+                        <div>
+                            <h3 class="font-semibold text-gray-900 text-sm group-hover:text-indigo-600 transition">${p.name}</h3>
+                            <p class="text-base font-extrabold text-gray-900 mt-1">$${p.price.toFixed(2)}</p>
+                        </div>
+                        <button onclick="addToCart(${p.id})" class="w-full bg-gray-900 hover:bg-indigo-600 text-white font-medium py-2.5 rounded-xl text-xs transition flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-cart-plus"></i>
+                            <span>Add to Bag</span>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterCategory(category) {
+            currentCategory = category;
+            document.getElementById('section-title').innerText = category === 'All' ? 'Featured Catalog' : `${category} Collection`;
+            
+            // Highlight active button style
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                if(btn.innerText.includes(category) || (category === 'All' && btn.innerText.includes('All'))) {
+                    btn.className = "cat-btn bg-black text-white px-4 py-2 rounded-lg text-xs font-semibold transition";
+                } else {
+                    btn.className = "cat-btn bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg text-xs font-semibold transition";
+                }
+            });
+
+            renderProducts(category);
+        }
+
+        // Cart Drawer Operations
+        function toggleCart() {
+            const drawer = document.getElementById('cart-drawer');
+            const overlay = document.getElementById('cart-overlay');
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('hidden');
+        }
+
+        function addToCart(id) {
+            const product = products.find(p => p.id === id);
+            const existing = cart.find(item => item.id === id);
+
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+            updateCartUI();
+            toggleCart(); // Open cart automatically on addition for interactive feedback
+        }
+
+        function updateQuantity(id, change) {
+            const item = cart.find(i => i.id === id);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    cart = cart.filter(i => i.id !== id);
+                }
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const badge = document.getElementById('cart-badge');
+            const itemsContainer = document.getElementById('cart-items');
+            const subtotalEl = document.getElementById('cart-subtotal');
+            const totalEl = document.getElementById('cart-total');
+            const checkoutBtn = document.getElementById('checkout-action-btn');
+
+            const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            badge.innerText = totalCount;
+
+            if (cart.length === 0) {
+                itemsContainer.innerHTML = `
+                    <div class="text-center py-12 space-y-3 text-gray-400">
+                        <i class="fa-solid fa-bag-shopping text-4xl"></i>
+                        <p class="text-sm">Your shopping bag is currently empty.</p>
+                    </div>`;
+                checkoutBtn.setAttribute('disabled', 'true');
+            } else {
+                itemsContainer.innerHTML = cart.map(item => `
+                    <div class="flex items-center space-x-4 border-b border-gray-100 pb-4">
+                        <img src="${item.image}" class="w-16 h-16 object-cover rounded-xl bg-gray-100" alt="">
+                        <div class="flex-grow">
+                            <h4 class="text-xs font-semibold text-gray-900">${item.name}</h4>
+                            <p class="text-xs font-bold text-gray-500 mt-1">$${item.price.toFixed(2)}</p>
+                            <div class="flex items-center space-x-3 mt-2">
+                                <button onclick="updateQuantity(${item.id}, -1)" class="w-6 h-6 bg-gray-100 hover:bg-gray-200 rounded-md text-xs font-bold flex items-center justify-center">-</button>
+                                <span class="text-xs font-semibold">${item.quantity}</span>
+                                <button onclick="updateQuantity(${item.id}, 1)" class="w-6 h-6 bg-gray-100 hover:bg-gray-200 rounded-md text-xs font-bold flex items-center justify-center">+</button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+                checkoutBtn.removeAttribute('disabled');
+            }
+
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            subtotalEl.innerText = `$${subtotal.toFixed(2)}`;
+            totalEl.innerText = `$${subtotal.toFixed(2)}`;
+        }
+
+        function openCheckoutModal() {
+            toggleCart();
+            document.getElementById('checkout-modal').classList.remove('hidden');
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkout-modal').classList.add('hidden');
+            cart = [];
+            updateCartUI();
+        }
+
+        // Initialize App
+        renderProducts('All');
+    </script>
+</body>
+</html>
